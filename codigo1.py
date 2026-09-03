@@ -143,34 +143,57 @@ plt.show()
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+import time 
 
-def generar_lista_aleatoria(n, minimo=0, maximo=100):
+def generar_lista_aleatoria(n, minimo=0, maximo=1000):
     return [random.randint(minimo, maximo) for _ in range(n)]
 
 def bubble_sort(arr, n):
-    k = 0 
+    tiempo_inicial = time.time()
+    pasos = 0 
+    intercambios = 0
     for i in range(n):
-        k += 1
+        pasos += 1
         for j in range(0, n - i - 1):
-            k += 1
+            pasos += 1
             if arr[j] > arr[j+1]:
+                intercambios += 2
                 arr[j], arr[j+1] = arr[j+1], arr[j]
-    return k
 
-entrada = [1, 50, 100, 150, 200, 250, 300, 350, 400, 500,550]
-resultados = []
+    tiempo_final = time.time() - tiempo_inicial
+    return pasos, tiempo_final
+
+def insertion_sort(arr):
+    # Recorremos desde el segundo elemento
+    tiempo_inicial = time.time()
+    pasos = 0
+    for i in range(1, len(arr)):
+        pasos += 1 
+        key = arr[i]
+        j = i - 1
+        
+        # Desplazamos los elementos mayores hacia la derecha
+        while j >= 0 and arr[j] > key:
+            pasos += 1 
+            intercambios += 1 
+            arr[j + 1] = arr[j]
+            j -= 1
+            
+        # Insertamos el elemento en su posición correcta
+        intercambios += 1 
+        arr[j + 1] = key
+        tiempo_final = time.time() - tiempo_inicial
+    return tiempo_final
+
+
+entrada = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]
+
+pasos_k = []
+tiempos = []
 
 for n in entrada: 
     arreglo_nuevo = generar_lista_aleatoria(n, 1, 100)
-    
-    res = bubble_sort(arreglo_nuevo, n)
-    resultados.append(res)
+    k, tiempo = bubble_sort(arreglo_nuevo, n)
+    pasos_k.append(k)
+    tiempos.append(tiempo)
 
-arreglo_x = np.array(entrada)
-arreglo_y = np.array(resultados)
-
-plt.figure(figsize=(8, 5))
-plt.plot(arreglo_x, arreglo_y,marker='o')
-
-plt.legend()
-plt.show()
